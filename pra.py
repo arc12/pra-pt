@@ -7,13 +7,34 @@ PLAYTHING_NAME = "pra"
 class Langstrings(LangstringsBase):
     langstrings = {
         "ROC_LABEL": {
-            "en": "Model"
+            "en": "Model:"
+        },
+        "COST": {
+            "en": "Cost"
+        },
+        "BENEFIT": {
+            "en": "Benefit"
+        },
+        "CB_CHECKBOX": {
+            "en": "Include cost/benefit values (benefit is > 0)"
         },
         "MENU_ABOUT": {
             "en": "About"
         },
         "MENU_SIMULATE": {
             "en": "Simulate"
+        },
+        "METRICS": {
+            "en": "Metrics"
+        },
+        "PRECISION": {
+            "en": "Precision"
+        },
+        "RECALL": {
+            "en": "Recall"
+        },
+        "ACCURACY": {
+            "en": "Accuracy"
         }
     }
 
