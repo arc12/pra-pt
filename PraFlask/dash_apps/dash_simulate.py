@@ -192,9 +192,9 @@ def create_dash(server, url_rule, url_base_pathname):
                 "title": {"text": cb_text, "x": 0.5, "xanchor": "center", "y": 0.9, "yanchor": "bottom"},
                 "xaxis": {"showgrid": False, "showticklabels": False, "showline": True, "mirror": True, "fixedrange": True, "range": [0, d]},
                 "yaxis": {"showgrid": False, "showticklabels": False, "showline": True, "mirror": True, "fixedrange": True, "range": [0, d]},
-                "margin": {"l": 5, "r": 5, "b": 50, "t": 10 if cb_text is None else 40},
-                "height": 300 if cb_text is None else 330,
-                "legend": {"orientation": "h", "xanchor": "left", "x": 0, "yanchor": "top", "y": -0.01}
+                "margin": {"l": 5, "r": 5, "b": 30, "t": 10 if cb_text is None else 40},
+                "height": 330 if cb_text is None else 360,
+                "legend": {"orientation": "h", "xanchor": "left", "x": 0, "yanchor": "top", "y": -0.1}
             }
         }
 
