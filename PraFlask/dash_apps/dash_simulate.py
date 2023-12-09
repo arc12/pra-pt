@@ -148,7 +148,7 @@ def create_dash(server, url_rule, url_base_pathname):
             else:
                 cb_text = None
         except Exception as ex:
-            cb_text = "Error! Cost/Benefit values must all be numerical."  # present an error msg about invalid entry
+            cb_text = "Error! Cost/Benefit values must all be numerical."
 
         # scatter grid - visualise the TP/FP
         # the values, v, in shuffled give a position in the scatter plot: x = v % D, y = v // M, where D is the dimension given in config = sqrt(len(shuffled))
@@ -290,13 +290,13 @@ def create_dash(server, url_rule, url_base_pathname):
 
             cb_inputs = [
                 html.Label(spec.detail.get("tp", "TP")),
-                dcc.Input(id="cb_tp", type="text", size=3, value=20, style={"margin-left": "5px", "margin-right": "10px"}),
+                dcc.Input(id="cb_tp", type="text", size=3, value=spec.detail.get("cb_tp", 0), style={"margin-left": "5px", "margin-right": "10px"}),
                 html.Label(spec.detail.get("fp", "FP")),
-                dcc.Input(id="cb_fp", type="text", size=3, value=-10, style={"margin-left": "5px", "margin-right": "10px"}),
+                dcc.Input(id="cb_fp", type="text", size=3, value=spec.detail.get("cb_fp", 0), style={"margin-left": "5px", "margin-right": "10px"}),
                 html.Label(spec.detail.get("tn", "TN")),
-                dcc.Input(id="cb_tn", type="text", size=3, value=0, style={"margin-left": "5px", "margin-right": "10px"}),
+                dcc.Input(id="cb_tn", type="text", size=3, value=spec.detail.get("cb_tn", 0), style={"margin-left": "5px", "margin-right": "10px"}),
                 html.Label(spec.detail.get("fn", "FN")),
-                dcc.Input(id="cb_fn", type="text", size=3, value=-20, style={"margin-left": "5px", "margin-right": "10px"}),
+                dcc.Input(id="cb_fn", type="text", size=3, value=spec.detail.get("cb_fn", 0), style={"margin-left": "5px", "margin-right": "10px"}),
                 html.Button("Set", id="set_cb", className="btn btn-secondary pb-0 pt-1 mb-1")
             ]
 
