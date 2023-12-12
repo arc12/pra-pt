@@ -118,16 +118,23 @@ def create_dash(server, url_rule, url_base_pathname):
                 State("cb_fp", "value"),
                 State("cb_tn", "value"),
                 State("cb_fn", "value"),
-                State("location", "pathname")
+                State("location", "pathname"),
+                State("location", "search")
             ]
     )
-    def compute(cf_slider, specificity_slider, tpr_lookup, set_cb_clicks, cb_hidden, specificity_slider_step, shuffled, cb_checkbox, cb_tp, cb_fp, cb_tn, cb_fn, pathname):
-        # if shuffled is None:
-        #     raise PreventUpdate
+    def compute(cf_slider, specificity_slider, tpr_lookup, set_cb_clicks, cb_hidden, specificity_slider_step, shuffled, cb_checkbox, cb_tp, cb_fp, cb_tn, cb_fn, pathname, querystring):
+        # TODO consider making this a client-side callback. So far, however, the lag of a server round-trip seems OK.
+        # Some jiggery-pokery would be needed to retain the activity logging.
         
         specification_id = pathname.split('/')[-1]
         spec = core.get_specification(specification_id)
         langstrings = Langstrings(spec.lang)
+        tag = None
+        if len(querystring) > 0:
+            for param, value in [pv.split('=') for pv in querystring[1:].split("&")]:
+                if param == "tag":
+                    tag = value
+                    break
 
         class_fraction = cf_slider / 100  # display is %
         n = len(shuffled)
@@ -206,7 +213,7 @@ def create_dash(server, url_rule, url_base_pathname):
         precision = round(tp / (tp + fp), 2) * 100
         recall = round(tp / (tp + fn), 2) * 100
         accuracy = round((tp + tn) / n, 2) * 100
-        pos_frac = round((tp + fp) / n, 2) * 100
+        # pos_frac = round((tp + fp) / n, 2) * 100
 
         metric_bars = {
             "data": [
@@ -229,6 +236,21 @@ def create_dash(server, url_rule, url_base_pathname):
             }
         }
 
+        activity = {
+            "action": callback_context.triggered_id,
+            "cf_slider": cf_slider,
+            "specificity_slider": specificity_slider
+        }
+        if "CB" in cb_checkbox:
+            activity.update({"cb_tp":cb_tp, "cb_fp": cb_fp, "cb_tn": cb_tn, "cb_fn": cb_fn})
+
+        # TODO find a method for capturing the initial referrer. (the referrer in a callback IS the page itself)
+        core.record_activity(view_name, specification_id, session,
+                             activity=activity,
+                             referrer="(callback)",
+                             tag=tag)
+        
+
         return [scatter_grid, metric_bars]
     
     @app.callback(
@@ -246,7 +268,19 @@ def create_dash(server, url_rule, url_base_pathname):
             
         specification_id = pathname.split('/')[-1]
         spec = core.get_specification(specification_id)
-        # langstrings = Langstrings(spec.lang)
+        tag = None
+        if len(querystring) > 0:
+            for param, value in [pv.split('=') for pv in querystring[1:].split("&")]:
+                if param == "tag":
+                    tag = value
+                    break
+
+        # TODO find a method for capturing the initial referrer. (the referrer in a callback IS the page itself)
+        core.record_activity(view_name, specification_id, session,
+                             activity={"action": "change roc", "roc_key": roc_key},
+                             referrer="(callback)",
+                             tag=tag)
+        
 
         rocs = spec.load_asset_json("rocs")
         use_spline = rocs[roc_key]
