@@ -8,7 +8,7 @@ from pra import core, menu, Langstrings
 from flask import session
 
 from dash import html, dcc, callback_context, no_update
-from dash.exceptions import PreventUpdate
+# from dash.exceptions import PreventUpdate
 
 from dash.dependencies import Output, Input, State
 
@@ -37,7 +37,12 @@ def create_dash(server, url_rule, url_base_pathname):
             # className="header"
             ),
         
-        html.Div([html.Label(id="roc_label"), dcc.Dropdown(id="roc_key", className="mx-2")], className="d-flex justify-content-start"),
+        html.Div(
+            [
+                html.Label(id="roc_label"),
+                dcc.Dropdown(id="roc_key", clearable=False, searchable=False, className="mx-2")
+            ],
+            className="d-flex justify-content-start"),
 
         html.Div(
             [
@@ -52,18 +57,18 @@ def create_dash(server, url_rule, url_base_pathname):
                     [
                         html.Label(id="cf_slider_label"),
                         html.Div(dcc.Slider(id="cf_slider", min=5, max=95, step=5, value=50, marks=None, tooltip={"placement": "bottom", "always_visible": True},
-                                            className="mx-2"), style={"width": "250px"})
+                                            className="mx-0"), style={"width": "250px"})
                     ]
                 ),
                 html.Div(
                     [
                         html.Label(id="specificity_slider_label"),
                         html.Div(dcc.Slider(id="specificity_slider", min=0, value=0, marks=None, tooltip={"placement": "bottom", "always_visible": True},
-                                            className="mx-2"), style={"width": "250px"})
+                                            className="mx-0"), style={"width": "250px"})
                     ]
                 )
             ],
-            className="d-flex justify-content-start mt-2"
+            className="d-flex justify-content-start mt-2 mb-1"
         ),
 
         html.Div(
@@ -140,7 +145,6 @@ def create_dash(server, url_rule, url_base_pathname):
         print(tp, fp, tn, fn)
 
         try:
-            # cb_checkbox = [] if cb_checkbox is None else cb_checkbox
             if "CB" in cb_checkbox:
                 cost_benefit = tp * float(cb_tp) + fp * float(cb_fp) + tn * float(cb_tn) + fn * float(cb_fn)
                 cb_units = spec.detail.get("cb_units", "")
@@ -194,7 +198,7 @@ def create_dash(server, url_rule, url_base_pathname):
                 "yaxis": {"showgrid": False, "showticklabels": False, "showline": True, "mirror": True, "fixedrange": True, "range": [0, d]},
                 "margin": {"l": 5, "r": 5, "b": 30, "t": 10 if cb_text is None else 40},
                 "height": 330 if cb_text is None else 360,
-                "legend": {"orientation": "h", "xanchor": "left", "x": 0, "yanchor": "top", "y": -0.1}
+                "legend": {"orientation": "h", "xanchor": "left", "x": 0, "yanchor": "top", "y": -0.08}
             }
         }
 
@@ -211,7 +215,8 @@ def create_dash(server, url_rule, url_base_pathname):
                     "x": [precision, recall, accuracy],
                     "text": [f"Precision={precision:.0f}%", f"Recall={recall:.0f}%", f"Accuracy={accuracy:.0f}%"],
                     "type": "bar",
-                    "orientation": "h"
+                    "orientation": "h",
+                    "hoverinfo": "skip"
                 }
             ],
             "layout": {
