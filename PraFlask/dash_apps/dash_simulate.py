@@ -39,7 +39,7 @@ def create_dash(server, url_rule, url_base_pathname):
         
         html.Div(
             [
-                html.Label(id="roc_label"),
+                html.Label(id="roc_label", style={"margin-top": "5px"}),
                 dcc.Dropdown(id="roc_key", clearable=False, searchable=False, className="mx-2", style={"width": "200px"})
             ],
             className="d-flex justify-content-start"),
@@ -149,11 +149,11 @@ def create_dash(server, url_rule, url_base_pathname):
         fp = int(round(fp_rate * n_c0, 0))
         tn = n_c0 - fp
         fn = n_c1 - tp
-        print(tp, fp, tn, fn)
 
         try:
             if "CB" in cb_checkbox:
-                cost_benefit = tp * float(cb_tp) + fp * float(cb_fp) + tn * float(cb_tn) + fn * float(cb_fn)
+                # calculate a mean value per "candidate", i.e. per grid item
+                cost_benefit = (tp * float(cb_tp) + fp * float(cb_fp) + tn * float(cb_tn) + fn * float(cb_fn)) / n
                 cb_units = spec.detail.get("cb_units", "")
                 cb_text = (f"{langstrings.get('COST')} = {cb_units}{-cost_benefit:.2f}" if cost_benefit < 0 else f"{langstrings.get('BENEFIT')} = {cb_units}{cost_benefit:.2f}")
             else:

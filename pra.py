@@ -10,10 +10,10 @@ class Langstrings(LangstringsBase):
             "en": "Model:"
         },
         "COST": {
-            "en": "Cost"
+            "en": "Mean Cost"
         },
         "BENEFIT": {
-            "en": "Benefit"
+            "en": "Mean Benefit"
         },
         "CB_CHECKBOX": {
             "en": "Include cost/benefit values (benefit is > 0)"
