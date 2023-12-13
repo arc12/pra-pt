@@ -40,7 +40,7 @@ def create_dash(server, url_rule, url_base_pathname):
         html.Div(
             [
                 html.Label(id="roc_label"),
-                dcc.Dropdown(id="roc_key", clearable=False, searchable=False, className="mx-2")
+                dcc.Dropdown(id="roc_key", clearable=False, searchable=False, className="mx-2", style={"width": "200px"})
             ],
             className="d-flex justify-content-start"),
 
@@ -205,7 +205,7 @@ def create_dash(server, url_rule, url_base_pathname):
                 "yaxis": {"showgrid": False, "showticklabels": False, "showline": True, "mirror": True, "fixedrange": True, "range": [0, d]},
                 "margin": {"l": 5, "r": 5, "b": 30, "t": 10 if cb_text is None else 40},
                 "height": 330 if cb_text is None else 360,
-                "legend": {"orientation": "h", "xanchor": "left", "x": 0, "yanchor": "top", "y": -0.08}
+                "legend": {"orientation": "h", "xanchor": "left", "x": 0, "yanchor": "top", "y": -0.02}
             }
         }
 
